@@ -1,0 +1,76 @@
+/Users/rwikkamilya/MSc/AIDM/aidm_final_ass/.venv/bin/python /Users/rwikkamilya/MSc/AIDM/aidm_final_ass/offline_hpo.py
+Loading data from data/user_movie_rating.npy ...
+Data shape: (65225506, 3)
+Building full Movie x User CSC matrix...
+Sparse matrix shape: (17770, 103703), nnz: 65225506
+Total users: 103703, total movies: 17770
+
+Sampling 5000 users for experiments...
+Subset matrix shape: (17770, 5000)
+
+[GT] Brute-force on 5000 users: 12497500 pairs
+[GT] Processed u = 500/5000 users...
+[GT] Processed u = 1000/5000 users...
+[GT] Processed u = 1500/5000 users...
+[GT] Processed u = 2000/5000 users...
+[GT] Processed u = 2500/5000 users...
+[GT] Processed u = 3000/5000 users...
+[GT] Processed u = 3500/5000 users...
+[GT] Processed u = 4000/5000 users...
+[GT] Processed u = 4500/5000 users...
+[GT] Done. Total true pairs (JS>0.5): 7
+[GT] Pairs checked: 12497500, after len filter: 9010487
+[GT] Time for brute-force ground truth: 2652.31 seconds
+
+=== LSH CONFIGURATION EXPERIMENTS ===
+Ground truth pair count: 7
+
+
+--- Config: h=80,  b=16, r=5 ---
+[h=80,  b=16, r=5] Computing MinHash signatures (h=80) ...
+[h=80,  b=16, r=5] Signatures shape: (80, 5000), time: 2.94 s
+[h=80,  b=16, r=5] Running LSH banding (b=16, r=5) ...
+[LSH] Candidate generation: 46071 pairs, skipped buckets: 0, time: 0.24 s
+[h=80,  b=16, r=5] RESULTS:
+  Ground truth pairs   : 7
+  Candidate pairs      : 46071
+  True pairs covered   : 0
+  Recall               : 0.0000
+  Candidate/GT factor  : 6581.6x
+  Time (signatures)    : 2.94 s
+  Time (LSH banding)   : 0.24 s
+  Total cfg time       : 3.20 s
+
+--- Config: h=100, b=20, r=5 ---
+[h=100, b=20, r=5] Computing MinHash signatures (h=100) ...
+[h=100, b=20, r=5] Signatures shape: (100, 5000), time: 3.32 s
+[h=100, b=20, r=5] Running LSH banding (b=20, r=5) ...
+[LSH] Candidate generation: 80460 pairs, skipped buckets: 0, time: 0.33 s
+[h=100, b=20, r=5] RESULTS:
+  Ground truth pairs   : 7
+  Candidate pairs      : 80460
+  True pairs covered   : 1
+  Recall               : 0.1429
+  Candidate/GT factor  : 11494.3x
+  Time (signatures)    : 3.32 s
+  Time (LSH banding)   : 0.33 s
+  Total cfg time       : 3.66 s
+
+--- Config: h=120, b=20, r=6 ---
+[h=120, b=20, r=6] Computing MinHash signatures (h=120) ...
+[h=120, b=20, r=6] Signatures shape: (120, 5000), time: 4.38 s
+[h=120, b=20, r=6] Running LSH banding (b=20, r=6) ...
+[LSH] Candidate generation: 17101 pairs, skipped buckets: 0, time: 0.17 s
+[h=120, b=20, r=6] RESULTS:
+  Ground truth pairs   : 7
+  Candidate pairs      : 17101
+  True pairs covered   : 1
+  Recall               : 0.1429
+  Candidate/GT factor  : 2443.0x
+  Time (signatures)    : 4.38 s
+  Time (LSH banding)   : 0.17 s
+  Total cfg time       : 4.56 s
+
+=== Experiment complete ===
+
+Process finished with exit code 0
