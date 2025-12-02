@@ -212,6 +212,7 @@ def lsh_and_output_pairs(user_movies: List[np.ndarray],
                          bands: int,
                          rows_per_band: int,
                          out_path: str,
+                         csv_output_path: str = None,
                          max_bucket_size: int = 1000) -> None:
     """
     Apply LSH banding to the signatures, generate candidate user pairs,
@@ -224,6 +225,7 @@ def lsh_and_output_pairs(user_movies: List[np.ndarray],
         bands: number of LSH bands
         rows_per_band: rows per band
         out_path: output file path
+        csv_output_path: CSV file path to save Jaccard similarity values for plotting
         max_bucket_size: skip buckets larger than this (to avoid quadratic explosion)
     """
     num_hashes, num_users = signatures.shape
@@ -235,6 +237,12 @@ def lsh_and_output_pairs(user_movies: List[np.ndarray],
 
     checked_pairs: Set[Tuple[int, int]] = set()
     num_written = 0
+
+    # Open CSV file for Jaccard similarity values if path provided
+    csv_file = None
+    if csv_output_path:
+        csv_file = open(csv_output_path, "w")
+        csv_file.write("user1,user2,jaccard_similarity\n")
 
     with open(out_path, "w") as out_file:
         for b in range(bands):
@@ -281,9 +289,19 @@ def lsh_and_output_pairs(user_movies: List[np.ndarray],
                             u1_out = pair[0] + 1
                             u2_out = pair[1] + 1
                             out_file.write(f"{u1_out},{u2_out}\n")
+                            
+                            # Write to CSV file if enabled
+                            if csv_file:
+                                csv_file.write(f"{u1_out},{u2_out},{js:.6f}\n")
+                            
                             num_written += 1
 
             print(f"Finished band {b + 1}/{bands}, pairs written so far: {num_written}", flush=True)
+
+    # Close CSV file if it was opened
+    if csv_file:
+        csv_file.close()
+        print(f"Jaccard similarity values saved to: {csv_output_path}")
 
     print(f"Done. Total similar pairs written to {out_path}: {num_written}")
 
@@ -298,12 +316,14 @@ def main(argv: Iterable[str]) -> None:
     #     sys.exit(1)
 
     seed = int(argv[1]) if len(argv) >= 2 else 42
-    data_path = argv[2] if len(argv) >= 3 else "data/user_movie_rating.npy"
+    data_path = argv[2] if len(argv) >= 3 else "user_movie_rating.npy"
     out_path = argv[3] if len(argv) >= 4 else "result.txt"
+    csv_out_path = "jaccard_similarities.csv"
 
     print(f"Random seed: {seed}")
     print(f"Data path:   {data_path}")
     print(f"Output path: {out_path}")
+    print(f"CSV output:  {csv_out_path}")
 
     rng = np.random.default_rng(seed)
 
@@ -342,6 +362,7 @@ def main(argv: Iterable[str]) -> None:
                          bands=bands,
                          rows_per_band=rows_per_band,
                          out_path=out_path,
+                         csv_output_path=csv_out_path,
                          max_bucket_size=max_bucket_size)
 
 
