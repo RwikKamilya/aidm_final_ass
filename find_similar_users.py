@@ -65,11 +65,6 @@ def compute_minhash_signatures_csc(mat_csc, num_hashes, rng):
     return signatures
 
 def compute_jaccard_from_csc(char_matrix, u, v):
-    """
-    Compute Jaccard similarity between two users u, v
-    using the CSC Movie x User matrix.
-    u, v are 0-based user indices (columns in the matrix).
-    """
     indptr = char_matrix.indptr
     indices = char_matrix.indices
 
@@ -84,12 +79,9 @@ def compute_jaccard_from_csc(char_matrix, u, v):
     if rows_u.size == 0 and rows_v.size == 0:
         return 0.0
 
-    # Both rows_u and rows_v are sorted by construction in CSC
-    # intersection size
     inter = np.intersect1d(rows_u, rows_v, assume_unique=True)
     inter_size = inter.size
 
-    # union size = |A| + |B| - |A ∩ B|
     union_size = rows_u.size + rows_v.size - inter_size
     if union_size == 0:
         return 0.0
@@ -104,13 +96,6 @@ def lsh_find_similar_users(signatures,
                            jaccard_threshold,
                            max_bucket_size,
                            out_path):
-    """
-    Run LSH on the signatures to find candidate pairs,
-    then verify them with exact Jaccard using the sparse matrix.
-
-    signatures: np.ndarray of shape (num_hashes, num_users)
-    char_matrix: CSC Movie x User matrix
-    """
     print("\n=== Starting LSH banding and candidate generation ===")
 
     num_hashes, num_users = signatures.shape
@@ -128,12 +113,10 @@ def lsh_find_similar_users(signatures,
         band_end = band_start + rows_per_band
         print(f"\n-- Band {b + 1}/{bands}: rows [{band_start}:{band_end}) --")
 
-        band_slice = signatures[band_start:band_end, :]  # shape (rows_per_band, num_users)
+        band_slice = signatures[band_start:band_end, :]
 
-        # Map: band_key -> list of users in this bucket
         buckets = {}
         for user in range(num_users):
-            # Represent band as tuple; include band index in key to avoid cross-band mixing
             band_vec = tuple(band_slice[:, user])
             key = (b, band_vec)
 
@@ -146,7 +129,6 @@ def lsh_find_similar_users(signatures,
         total_buckets += num_buckets
         print(f"Band {b + 1}: formed {num_buckets} buckets")
 
-        # Generate candidate pairs from buckets
         band_candidates = 0
         for key, users in buckets.items():
             k = len(users)
@@ -154,9 +136,8 @@ def lsh_find_similar_users(signatures,
                 continue
             if k > max_bucket_size:
                 skipped_large_buckets += 1
-                continue  # skip very large bucket
+                continue
 
-            # All pairs within this bucket
             for i in range(k):
                 ui = users[i]
                 for j in range(i + 1, k):
@@ -177,7 +158,6 @@ def lsh_find_similar_users(signatures,
     print(f"Total buckets across all bands: {total_buckets}")
     print(f"Total skipped large buckets (> {max_bucket_size}): {skipped_large_buckets}")
 
-    # Now verify candidate pairs with exact Jaccard
     print("\n=== Verifying candidate pairs with exact Jaccard ===")
     verify_start = time.time()
 
