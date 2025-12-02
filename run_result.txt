@@ -1,0 +1,114 @@
+Random seed: 42
+Data path:   data/user_movie_rating.npy
+Output path: result.txt
+Loading data...
+Data shape: (65225506, 3)
+Building sparse Movie x User matrix (CSC)...
+Sparse matrix shape: (17770, 103703)
+  nnz (non-zeros):   65225506
+Number of users:  103703
+Number of movies: 17770
+Computing MinHash signatures with 100 permutations...
+Signature matrix shape: (100, 103703)
+Running LSH to find similar user pairs...
+
+=== Starting LSH banding and candidate generation ===
+
+-- Band 1/20: rows [0:5) --
+Band 1: formed 70335 buckets
+Band 1: added 390655 new candidate pairs (skipped 0 large buckets so far)
+
+-- Band 2/20: rows [5:10) --
+Band 2: formed 61672 buckets
+Band 2: added 1477575 new candidate pairs (skipped 1 large buckets so far)
+
+-- Band 3/20: rows [10:15) --
+Band 3: formed 47813 buckets
+Band 3: added 2720120 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 4/20: rows [15:20) --
+Band 4: formed 61770 buckets
+Band 4: added 568323 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 5/20: rows [20:25) --
+Band 5: formed 72407 buckets
+Band 5: added 334178 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 6/20: rows [25:30) --
+Band 6: formed 56789 buckets
+Band 6: added 1155430 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 7/20: rows [30:35) --
+Band 7: formed 58261 buckets
+Band 7: added 1041495 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 8/20: rows [35:40) --
+Band 8: formed 62795 buckets
+Band 8: added 599411 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 9/20: rows [40:45) --
+Band 9: formed 68466 buckets
+Band 9: added 570039 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 10/20: rows [45:50) --
+Band 10: formed 60129 buckets
+Band 10: added 969155 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 11/20: rows [50:55) --
+Band 11: formed 74183 buckets
+Band 11: added 232657 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 12/20: rows [55:60) --
+Band 12: formed 51238 buckets
+Band 12: added 1829664 new candidate pairs (skipped 3 large buckets so far)
+
+-- Band 13/20: rows [60:65) --
+Band 13: formed 52826 buckets
+Band 13: added 2031791 new candidate pairs (skipped 5 large buckets so far)
+
+-- Band 14/20: rows [65:70) --
+Band 14: formed 68257 buckets
+Band 14: added 360036 new candidate pairs (skipped 5 large buckets so far)
+
+-- Band 15/20: rows [70:75) --
+Band 15: formed 59931 buckets
+Band 15: added 1561506 new candidate pairs (skipped 6 large buckets so far)
+
+-- Band 16/20: rows [75:80) --
+Band 16: formed 69572 buckets
+Band 16: added 346958 new candidate pairs (skipped 6 large buckets so far)
+
+-- Band 17/20: rows [80:85) --
+Band 17: formed 63339 buckets
+Band 17: added 1529461 new candidate pairs (skipped 6 large buckets so far)
+
+-- Band 18/20: rows [85:90) --
+Band 18: formed 41192 buckets
+Band 18: added 3587182 new candidate pairs (skipped 8 large buckets so far)
+
+-- Band 19/20: rows [90:95) --
+Band 19: formed 49331 buckets
+Band 19: added 2096405 new candidate pairs (skipped 8 large buckets so far)
+
+-- Band 20/20: rows [95:100) --
+Band 20: formed 48129 buckets
+Band 20: added 3189007 new candidate pairs (skipped 8 large buckets so far)
+
+=== LSH candidate generation complete ===
+Total unique candidate pairs: 26591048
+Total buckets across all bands: 1198435
+Total skipped large buckets (> 1000): 8
+
+=== Verifying candidate pairs with exact Jaccard ===
+  Verified 10000/26591048 candidate pairs...
+  ...
+  Verified 26590000/26591048 candidate pairs...
+
+=== Verification complete ===
+Number of pairs with Jaccard >= 0.5: 646
+Time spent in LSH banding   : 65.30 seconds
+Time spent in verification  : 606.80 seconds
+Time spent in LSH + verify  : 672.10 seconds
+Time elapsed: 775.6847002506256
+
+Process finished with exit code 0
